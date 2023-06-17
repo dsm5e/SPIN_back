@@ -11,25 +11,31 @@ struct ItemModel1C: Identifiable, Codable, Equatable {
     // все свойства, которые нужно менять, должны быть var
     let id, id1C: String
     var name: String
-    let category, brand: [Brand]
-    let style, size, condition: String
-    let prices: [Price]
+    var categories, brands: [Brand]
+    var style, size, condition: String
+    var prices: [Price]
     let images: [ImageItem1C]
     let descriptions: [Description]
-    let createdAt, updatedAt: String
-//    let updateLog: [Item1C]? // Разобраться с бэком по формату ответа
-    let acceptance: String
+    var createdAt, updatedAt: String
+    var acceptance: String
+    var staffPhoto: String
+    var status: String
+    
 
     enum CodingKeys: String, CodingKey {
         case id
         case id1C = "id1c"
-        case name, category, brand, style, size, condition, prices, images, descriptions, createdAt, updatedAt, acceptance
+        case name
+        case categories = "category"
+        case brands = "brand"
+        case style, size, condition, prices, images, descriptions, createdAt, updatedAt, acceptance, status, staffPhoto
     }
 }
 
 // MARK: - Brand
-struct Brand: Codable, Equatable {
-    let id, name: String
+struct Brand: Identifiable, Codable, Equatable  {
+    let id: String
+    var name: String
 }
 
 // MARK: - Description
@@ -46,7 +52,7 @@ struct ImageItem1C: Codable, Equatable {
 // MARK: - Price
 struct Price: Codable, Equatable {
     let name: String
-    let value: Int
+    var value: Int
     let currency: String
 }
 

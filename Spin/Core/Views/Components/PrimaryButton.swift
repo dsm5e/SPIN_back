@@ -30,12 +30,13 @@ struct PrimaryButton: View {
 
             }
         }
+        .frame(maxWidth: .infinity)
         .padding()
-//        .padding(.horizontal, CGFloat(size ?? 100))
         .foregroundColor(.white)
         .background(Color.accentColor)
         .cornerRadius(15)
-        .shadow(color: .accentColor.opacity(0.5), radius: 5, y: 5)
+        .shadow(color: .accentColor.opacity(0.2), radius: 2, y: 3)
+        .padding(.horizontal)
     }
 }
 

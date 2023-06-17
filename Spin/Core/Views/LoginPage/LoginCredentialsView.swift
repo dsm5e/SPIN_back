@@ -14,32 +14,31 @@ enum FocusedField {
 struct LoginCredentialsView: View {
     
     @EnvironmentObject var authenticationManager: AuthenticationManager
+    @FocusState private var focusedField: FocusedField?
     @State private var username = ""
     @State private var password = ""
-    @FocusState private var focusedField: FocusedField?
-
+    
     var body: some View {
         VStack(spacing: 0) {
-            
             LoginTitle(title: "SPIN4SPIN", showSeconTitle: true)
                 .padding(.bottom, 50)
             usernameTF
             secureTF
-            
             Spacer()
             
-            PrimaryButton(title: "Вход", showImage: false, size: 130)
+            PrimaryButton(title: "Вход", showImage: false, size: 200)
                 .padding(.bottom, 15)
                 .onTapGesture {
-                    Task.init {
+                    Task {
                         await authenticationManager.serverAuthenticate(mail: username, password: password)
                     }
                 }
+                .frame(maxWidth: .infinity)
             Text("Забыл пароль?")
                 .font(.callout)
-            
             Spacer()
         }
+        .applyLoadingModifier(isLoading: authenticationManager.isLoading)
         .padding(.top, 100)
         .alert(isPresented: $authenticationManager.showErrorAlert) {
             Alert(title: Text("Неверный логин или пароль"), message: Text(authenticationManager.errorDescription ?? "Попробуйте еще раз"), dismissButton: .default(Text("ОК")))
@@ -58,8 +57,9 @@ struct LoginCredentialsView: View {
                 Text("Введите почту").foregroundColor(.gray)
                     .padding(.horizontal)
             })
-            .background(Color(red: 246/255, green: 246/255, blue: 246/255))
-            .overlay(RoundedRectangle(cornerRadius: 15).stroke(Color(red: 189/255, green: 189/255, blue: 189/255), lineWidth: 1))
+            .background(Color.textfieldColor)
+            .overlay(RoundedRectangle(cornerRadius: 15)
+                .stroke(Color.borderColor, lineWidth: 1))
             .cornerRadius(15)
             .padding()
     }
@@ -73,8 +73,9 @@ struct LoginCredentialsView: View {
                 Text("Введите пароль").foregroundColor(.gray)
                     .padding(.horizontal)
             })
-            .background(Color(red: 246/255, green: 246/255, blue: 246/255))
-            .overlay(RoundedRectangle(cornerRadius: 15).stroke(Color(red: 189/255, green: 189/255, blue: 189/255), lineWidth: 1))
+            .background(Color.textfieldColor)
+            .overlay(RoundedRectangle(cornerRadius: 15)
+                .stroke(Color.borderColor, lineWidth: 1))
             .cornerRadius(15)
             .padding(.horizontal)
     }

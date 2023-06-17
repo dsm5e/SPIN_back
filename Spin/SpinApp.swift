@@ -10,8 +10,9 @@ import SwiftUI
 @main
 
 struct SpinApp: App {
-    @StateObject var authenticationManager = AuthenticationManager()
     @Environment(\.scenePhase) private var scenePhase
+    @StateObject var authenticationManager = AuthenticationManager()
+    @StateObject var networkService = ApiService()
     @State private var showFaceID = false
     
     var body: some Scene {
@@ -28,6 +29,7 @@ struct SpinApp: App {
                 FaceIdView()
                     .environmentObject(authenticationManager)
             }
+            .environmentObject(networkService)
         }
         
         .onChange(of: scenePhase) { phase in
